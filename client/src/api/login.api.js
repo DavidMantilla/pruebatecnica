@@ -1,7 +1,17 @@
 import axios from 'axios'
 
+import { API_URL } from "../config";
 
-const API='http://localhost:4000/api';
-export const register=(user)=>axios.post(`${API}/register`,user);
+const instance = axios.create({
+  baseURL: API_URL,
+  withCredentials: false,
+  headers: { 
+    'Access-Control-Allow-Origin' : '*',
+    'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+  },
 
-export const login=(user)=>axios.post(`${API}/login`,user);
+});
+
+export const register=(user)=>instance.post(`/register`,user);
+
+export const login=(user)=>instance.post(`/login`,user);

@@ -25,7 +25,7 @@ export const Navbar = () => {
         {user ? (
           <>
             <li>
-              Bienvenido, {user.nombre}! ({user.email})
+              {user.nombre}
             </li>
             <li>
               <button onClick={handleLogout} className="logout-button">

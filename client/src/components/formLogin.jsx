@@ -17,10 +17,15 @@ export const FormLogin = () => {
     try {
       const res = await login({ email, password });
       if (res.status == 200) {
-        const {id,nombre,email,token} = res.data;
-              
+        const {id,nombre,email} = res.data;
+        
+        const token = Cookies.get(); 
+         console.log(token);
+         
         if (token) {
           dispatch(setUser({token,user:{id,nombre,email}})); // Almacena el token en Redux
+          
+          
         }
         return navigate("/visitas");
       }
