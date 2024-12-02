@@ -15,3 +15,4 @@ const instance = axios.create({
 export const register=(user)=>instance.post(`/register`,user);
 
 export const login=(user)=>instance.post(`/login`,user);
+export const validate=()=>instance.post(`/validate`);

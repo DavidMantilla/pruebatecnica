@@ -5,7 +5,7 @@ import { VisitasPage } from "./pages/VisitasPage";
 import {  AdminPage} from "./pages/adminPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
 import { Navbar } from "./components/navbar";
-
+import { ProtectedRoute} from './route'
 import "./css/App.css";
 function App() {
   return (
@@ -15,9 +15,11 @@ function App() {
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
-          <Route path="/usuarios" element={<AdminPage />} />
-          <Route path="/visitas" element={<VisitasPage />} />
-          <Route path="/*" element={<NotFoundPage />} />
+           <Route element={ProtectedRoute}>
+            <Route path="/usuarios" element={<AdminPage />} />
+            <Route path="/visitas" element={<VisitasPage />} />
+          </Route>
+            <Route path="/*" element={<NotFoundPage />} />
         </Routes>
       </div>
     </>

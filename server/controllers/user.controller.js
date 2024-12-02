@@ -2,6 +2,9 @@ import { pool } from "../db.js";
 import bcrypt from "bcryptjs";
 import { createAccessToken } from "../libs/jwt.js";
 import {createVisita} from "../controllers/visitas.controller.js";
+import { TOKEN_SECRET } from "../config.js";
+import jwt from "jsonwebtoken";
+
 // Obtener todos los usuarios
 export const getUsers = async (req, res) => {
   try {
@@ -143,4 +146,38 @@ export const login = async (req, res) => {
       });
       return res.sendStatus(200);
   }
+
+  
+export const verifyToken =(req,res)=>{
+
+  const {token}=req.cookies;
+  
+  if( !token){
+
+      return res.status(401).json({message:"no hay token, autorización denegada"})
+  }
+
+  jwt.verify(token,TOKEN_SECRET,async(err,user)=>{
+      if(err)
+          return res.status(403).json({message:"el Token es invalido"});
+        req.user= user;
+        const [response] = await pool.query(
+          "Select * from usuarios where id=? and estado=1",
+          [user.id]
+        );
+        if (response.length === 0) 
+          return res.status(400).json({message:" el usuario es invalido"})
+         
+        return res.json({
+          id: response[0].id,
+          nombre: response[0].nombre,
+          email:response[0].email,
+          token:token
+        });
+      
+      
+  })
+  
+}
  
+

@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { getVisitas,getVisita } from "../controllers/visitas.controller.js";
-import { getuser,getUsers,createUser,updateUser,login,logout,deleteUser} from "../controllers/user.controller.js";
+import { getuser,getUsers,createUser,updateUser,login,logout,deleteUser, verifyToken} from "../controllers/user.controller.js";
 import { authRequired } from "../middlewares/validateToken.js";
 import { validateSchema } from "../middlewares/validator.js";
 import { registerSchema,loginSchema  } from "../validation/auth.validation.js";
@@ -10,7 +10,7 @@ const visitas = Router();
 visitas.post('/login',validateSchema(loginSchema),login);
 visitas.post('/logout',logout);
 visitas.post('/register', validateSchema(registerSchema),createUser)
-
+visitas.post('/validate', verifyToken)
 
 
 visitas.get('/profile',authRequired, getuser)

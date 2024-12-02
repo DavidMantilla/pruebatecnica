@@ -17,16 +17,19 @@ export const FormLogin = () => {
     try {
       const res = await login({ email, password });
       if (res.status == 200) {
-        const {id,nombre,email} = res.data;
+        const {id,nombre,email, token} = res.data;
         
-        const token = Cookies.get(); 
-         console.log(token);
-         
-        if (token) {
-          dispatch(setUser({token,user:{id,nombre,email}})); // Almacena el token en Redux
-          
-          
-        }
+ 
+
+        // Guardar el token y la información del usuario en una cookie segura
+        Cookies.set("token", token, { expires: 1, secure: true, sameSite: "Strict" }); // Expira en 1 día
+        Cookies.set("user", JSON.stringify({ id, nombre, email }), { expires: 1, secure: true, sameSite: "Strict" });
+
+        // Actualizar el estado global de Redux
+        dispatch(setUser({ token, user: { id, nombre, email } }));
+
+        // Redirigir a la página principal o de visitas
+
         return navigate("/visitas");
       }
 
